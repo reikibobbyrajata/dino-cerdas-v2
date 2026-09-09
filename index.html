@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<!-- Dino Cerdas: Apps Script endpoint terbaru sudah dikonfigurasi. -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dino Cerdas — Literasi & Numerasi Kelas 2</title>
+<style>
+:root{
+  --blue:#1687c9; --blue-dark:#075985; --green:#39a852; --green-dark:#166534;
+  --mint:#e9fff0; --sky:#e8f7ff; --yellow:#ffd95a; --orange:#ff9f43;
+  --ink:#17324d; --white:#fff; --danger:#e45757;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,#dff5ff 0%,#effff2 55%,#d9f3df 100%);
+}
+header{
+  position:relative;overflow:hidden;padding:30px 20px 50px;
+  background:linear-gradient(135deg,#087fbd,#36ad63);color:white;
+}
+header:after{
+  content:"";position:absolute;inset:auto -5% -45px -5%;height:90px;
+  background:#dff7e4;border-radius:50% 50% 0 0/100% 100% 0 0;
+}
+.container{max-width:1100px;margin:auto;position:relative;z-index:1}
+.hero{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.dino{
+  font-size:100px;filter:drop-shadow(0 8px 5px #07598566);
+  animation:bob 2.5s ease-in-out infinite;
+}
+@keyframes bob{50%{transform:translateY(-8px) rotate(2deg)}}
+h1{font-size:clamp(30px,6vw,54px);margin:0 0 8px}
+.subtitle{font-size:18px;line-height:1.6;margin:0}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.badge{background:#ffffff25;border:1px solid #ffffff55;padding:8px 12px;border-radius:999px}
+nav{
+  position:sticky;top:0;z-index:10;background:#ffffffee;backdrop-filter:blur(8px);
+  box-shadow:0 3px 15px #0b426020;padding:10px;
+}
+.nav-inner{max-width:1100px;margin:auto;display:flex;gap:8px;overflow:auto}
+.nav-btn{
+  border:0;background:#e9f8ff;color:#075985;padding:11px 15px;border-radius:12px;
+  font-weight:700;cursor:pointer;white-space:nowrap;
+}
+.nav-btn.active,.nav-btn:hover{background:var(--blue);color:white}
+main{max-width:1100px;margin:25px auto;padding:0 15px}
+.section{display:none}.section.active{display:block}
+.card{
+  background:white;border-radius:22px;padding:24px;margin-bottom:20px;
+  box-shadow:0 8px 25px #0b426018;border:2px solid #d8f1e0;
+}
+.card h2{margin-top:0;color:var(--blue-dark)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.topic{
+  padding:20px;border-radius:18px;cursor:pointer;transition:.2s;border:2px solid transparent;
+}
+.topic:hover{transform:translateY(-3px);border-color:#86d8a0}
+.blue{background:var(--sky)}.green{background:var(--mint)}
+.topic .icon{font-size:42px}
+.topic h3{margin:10px 0 6px}
+.example{
+  background:#f5fbff;border-left:6px solid var(--blue);padding:15px;border-radius:12px;
+  margin:12px 0;line-height:1.7
+}
+.rule{background:#effdf2;border-left:6px solid var(--green);padding:15px;border-radius:12px}
+.question{
+  background:#fbfeff;border:2px solid #dcecf5;border-radius:17px;padding:18px;margin:14px 0;
+}
+.question h3{margin-top:0}
+label.option{
+  display:block;background:#f3f9fc;margin:8px 0;padding:12px;border-radius:11px;cursor:pointer;
+}
+input[type=radio]{margin-right:8px}
+button.primary{
+  background:linear-gradient(135deg,var(--blue),#21a3d9);color:white;border:0;
+  padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;
+}
+button.primary:hover{filter:brightness(1.05)}
+.result{
+  margin-top:18px;padding:16px;border-radius:14px;background:#eaf9ef;font-weight:700;
+}
+.feedback{margin-top:8px;font-weight:700}
+.correct{color:var(--green-dark)}.wrong{color:var(--danger)}
+.progress-wrap{background:#dcecf4;border-radius:999px;height:15px;overflow:hidden}
+.progress{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--green));transition:.4s}
+.score-box{
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center
+}
+.stat{background:#effaff;border-radius:15px;padding:14px 18px;min-width:140px}
+.stat strong{font-size:25px;color:var(--blue-dark);display:block}
+footer{text-align:center;padding:35px 15px;color:#35627d}
+.small{font-size:14px;color:#527187}
+.dino-card{
+  background:linear-gradient(135deg,#e9fbff,#effff0);border-radius:20px;padding:20px;
+  display:flex;gap:20px;align-items:center
+}
+@media(max-width:600px){.dino{font-size:72px}header{padding-bottom:40px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+<div class="container hero">
+  <div class="dino">🦖</div>
+  <div>
+    <h1>Dino Cerdas</h1>
+    <p class="subtitle">Petualangan Literasi & Numerasi Kelas 2<br>
+    Belajar Bahasa Indonesia dan Matematika sambil menjelajah dunia dinosaurus!</p>
+    <div class="badges"><span class="badge">📚 Literasi</span><span class="badge">🔢 Numerasi</span><span class="badge">🌿 Kelas 2</span></div>
+  </div>
+</div>
+</header>
+
+<nav>
+<div class="nav-inner">
+  <button class="nav-btn active" data-section="home">🏕️ Beranda</button>
+  <button class="nav-btn" data-section="materi">📖 Materi</button>
+  <button class="nav-btn" data-section="indo">📝 Bahasa Indonesia</button>
+  <button class="nav-btn" data-section="mtk">🔢 Matematika</button>
+  <button class="nav-btn" data-section="hasil">🏆 Hasil Belajar</button>
+  <button class="nav-btn" data-section="leaderboard">🥇 Leaderboard</button>
+</div>
+</nav>
+
+<main>
+<section id="home" class="section active">
+  <div class="card">
+    <h2>👋 Kenalan dengan Dino!</h2>
+    <p>Isi nama dan nomor absen sebelum mengerjakan agar hasilmu dapat masuk ke leaderboard.</p>
+    <div class="grid">
+      <div>
+        <label for="studentName"><b>Nama Lengkap</b></label>
+        <input id="studentName" type="text" placeholder="Contoh: Budi Santoso" maxlength="50"
+          style="width:100%;padding:13px;margin-top:7px;border:2px solid #cfe7f2;border-radius:12px;font-size:16px">
+      </div>
+      <div>
+        <label for="studentAbsence"><b>Nomor Absen</b></label>
+        <input id="studentAbsence" type="number" min="1" max="99" placeholder="Contoh: 12"
+          style="width:100%;padding:13px;margin-top:7px;border:2px solid #cfe7f2;border-radius:12px;font-size:16px">
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:16px;border:2px dashed #b9dfea;border-radius:16px;background:#f7fcfe">
+      <label for="studentPhoto"><b>📸 Foto untuk Leaderboard</b></label>
+      <p style="margin:6px 0 10px;color:#4d6675;font-size:14px">Ambil foto langsung dengan kamera perangkat. Foto akan ditampilkan bersama namamu di leaderboard.</p>
+      <input id="studentPhoto" type="file" accept="image/*" capture="user"
+        style="width:100%;padding:10px;background:#fff;border:2px solid #cfe7f2;border-radius:12px;font-size:14px"
+        onchange="handleStudentPhoto(event)">
+      <div id="photoPreviewWrap" style="display:none;margin-top:12px;text-align:center">
+        <img id="photoPreview" alt="Pratinjau foto siswa" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:4px solid #d9eef5;box-shadow:0 4px 12px rgba(0,0,0,.12)">
+        <div style="margin-top:7px;font-size:13px;color:#4d6675">Foto siap digunakan.</div>
+      </div>
+    </div>
+    <button class="primary" style="margin-top:15px" onclick="saveStudent()">💾 Simpan Data Siswa</button>
+    <div id="studentStatus" class="result" style="display:none"></div>
+  </div>
+  <div class="card">
+    <h2>🌴 Selamat datang di Pulau Dino!</h2>
+    <p>Ikuti petualangan dari satu pos ke pos berikutnya. Pelajari materi, lalu kerjakan soal cerita dengan teliti.</p>
+    <div class="dino-card"><div style="font-size:70px">🦕</div><div><b>Misi hari ini:</b><br>Kenali tanda baca <b>titik</b> dan <b>koma</b>, pahami <b>perasaan</b>, lalu gunakan tanda <b>&lt;, &gt;, +, −</b> untuk menyelesaikan masalah matematika.</div></div>
+  </div>
+  <div class="grid">
+    <div class="topic blue" onclick="showSection('materi')"><div class="icon">📚</div><h3>Pos 1 — Materi</h3><p>Pelajari konsep penting dengan contoh sederhana.</p></div>
+    <div class="topic green" onclick="showSection('indo')"><div class="icon">📝</div><h3>Pos 2 — Literasi</h3><p>10 soal Bahasa Indonesia berbentuk cerita.</p></div>
+    <div class="topic blue" onclick="showSection('mtk')"><div class="icon">🔢</div><h3>Pos 3 — Numerasi</h3><p>10 soal Matematika berbentuk cerita.</p></div>
+    <div class="topic green" onclick="showSection('hasil')"><div class="icon">🏆</div><h3>Pos 4 — Hasil</h3><p>Lihat perkembangan dan skor terbaikmu.</p></div>
+  </div>
+</section>
+
+<section id="materi" class="section">
+  <div class="card">
+    <h2>📖 Materi Petualangan</h2>
+    <div class="grid">
+      <div class="topic blue"><div class="icon">🔵</div><h3>Tanda Titik (.)</h3><p>Digunakan pada akhir kalimat berita/pernyataan.</p>
+        <div class="example">Dino makan daun.<br>Aku suka membaca.</div>
+      </div>
+      <div class="topic green"><div class="icon">🟢</div><h3>Tanda Koma (,)</h3><p>Digunakan, antara lain, untuk memisahkan unsur dalam perincian.</p>
+        <div class="example">Aku membawa buku, pensil, dan penghapus.</div>
+      </div>
+      <div class="topic blue"><div class="icon">😊</div><h3>Perasaan</h3><p>Perasaan dapat berupa senang, sedih, takut, marah, terkejut, atau bangga.</p>
+        <div class="example">Dino mendapat hadiah. Ia merasa <b>senang</b>.</div>
+      </div>
+      <div class="topic green"><div class="icon">➕➖</div><h3>Penjumlahan & Pengurangan</h3><p>Gunakan + untuk menambah dan − untuk mengurangi.</p>
+        <div class="example">8 + 4 = 12<br>15 − 6 = 9</div>
+      </div>
+      <div class="topic blue"><div class="icon">⚖️</div><h3>Lebih dari & Kurang dari</h3><p><b>&gt;</b> berarti lebih dari, sedangkan <b>&lt;</b> berarti kurang dari.</p>
+        <div class="example">9 &gt; 5 → 9 lebih dari 5<br>3 &lt; 7 → 3 kurang dari 7</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🧠 Tips Menjawab Soal Cerita</h2>
+    <div class="rule">1. Baca cerita sampai selesai.<br>2. Temukan informasi penting.<br>3. Tentukan apa yang ditanyakan.<br>4. Pilih tanda baca atau operasi hitung yang tepat.<br>5. Periksa kembali jawabanmu.</div>
+  </div>
+</section>
+
+<section id="indo" class="section">
+  <div class="card">
+    <div class="score-box"><div><h2>📝 Misi Bahasa Indonesia</h2><p>10 soal cerita — titik, koma, dan perasaan.</p></div><div class="stat">Skor<strong id="indoScore">0/10</strong></div></div>
+    <div class="progress-wrap"><div class="progress" id="indoProgress"></div></div>
+    <div id="indoQuestions"></div>
+    <button class="primary" onclick="gradeQuiz('indo')">Kirim</button>
+    <div id="indoResult"></div>
+  </div>
+</section>
+
+<section id="mtk" class="section">
+  <div class="card">
+    <div class="score-box"><div><h2>🔢 Misi Matematika</h2><p>10 soal cerita — &lt;, &gt;, penjumlahan, dan pengurangan.</p></div><div class="stat">Skor<strong id="mtkScore">0/10</strong></div></div>
+    <div class="progress-wrap"><div class="progress" id="mtkProgress"></div></div>
+    <div id="mtkQuestions"></div>
+    <button class="primary" onclick="gradeQuiz('mtk')">Kirim</button>
+    <div id="mtkResult"></div>
+  </div>
+</section>
+
+<section id="hasil" class="section">
+  <div class="card">
+    <h2>🏆 Papan Hasil Belajar</h2>
+    <div class="grid">
+      <div class="stat">Bahasa Indonesia<strong id="finalIndo">0/10</strong></div>
+      <div class="stat">Matematika<strong id="finalMtk">0/10</strong></div>
+      <div class="stat">Total<strong id="finalTotal">0/20</strong></div>
+    </div>
+    <div class="result" id="motivasi">Ayo mulai petualanganmu! Setiap jawaban benar membuat Dino semakin pintar. 🦖🌟</div>
+    <button class="primary" id="finalSendBtn" onclick="submitFinalResult()" style="margin-top:16px;width:100%;">
+      📤 Kirim Hasil
+    </button>
+    <div id="finalSendStatus" class="result" style="display:none"></div>
+  </div>
+</section>
+
+<section id="leaderboard" class="section">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div>
+        <h2>🥇 Leaderboard Dino Cerdas</h2>
+        <p>Peringkat hasil belajar siswa kelas 2 berdasarkan nilai terbaik.</p>
+      </div>
+      <button class="primary" type="button" onclick="loadOnlineLeaderboard()">🔄 Muat Ulang</button>
+    </div>
+    <div id="leaderboardTable" style="margin-top:18px">
+      <div class="result">⏳ Memuat leaderboard kelas...</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  🦖 Dino Cerdas • Media Pembelajaran Interaktif Literasi & Numerasi Kelas 2<br>
+  <span class="small">Leaderboard online menggunakan Google Apps Script + Google Sheets.</span>
+</footer>
+
+<script>
+const data = {
+indo:[
+{q:"Rani pergi ke taman dinosaurus bersama ibu. Ia membawa buku, pensil dan penghapus. Tanda baca yang tepat setelah kata “buku” adalah …",o:["titik (.)","koma (,)","tanda tanya (?)"],a:1},
+{q:"Beni melihat T-Rex dari jauh. Beni merasa sangat takut. Kata yang menunjukkan perasaan Beni adalah …",o:["melihat","jauh","takut"],a:2},
+{q:"Siti selesai membaca cerita tentang dinosaurus. Ia tersenyum karena ceritanya lucu. Siti merasa …",o:["sedih","senang","marah"],a:1},
+{q:"Dino kecil mengumpulkan daun, batu dan bunga. Tanda baca yang tepat untuk memisahkan “daun” dan “batu” adalah …",o:["koma (,)","titik (.)","tidak perlu tanda baca"],a:0},
+{q:"Ayah berkata, “Kita akan pergi ke museum dinosaurus.” Kalimat tersebut diakhiri dengan tanda …",o:["koma","titik","koma dan titik"],a:1},
+{q:"Lala kehilangan pensil kesayangannya. Ia mencari di tas, meja dan laci. Lala merasa …",o:["kecewa","bangga","gembira"],a:0},
+{q:"Doni membawa tiga benda: buku, topi dan botol minum. Tanda baca yang tepat setelah kata “buku” adalah …",o:["koma (,)","titik (.)","tidak ada"],a:0},
+{q:"Setelah berhasil menyelesaikan tugas sulit, Raka tersenyum dan berkata, “Aku berhasil!” Perasaan Raka adalah …",o:["bangga","takut","sedih"],a:0},
+{q:"Mira membaca kalimat: “Dinosaurus itu besar.” Tanda di akhir kalimat tersebut adalah …",o:["koma","titik","tanda seru"],a:1},
+{q:"Nina melihat telur dinosaurus menetas untuk pertama kali. Matanya membesar dan ia berkata, “Wah!” Nina merasa …",o:["terkejut","bosan","sedih"],a:0}
+],
+mtk:[
+{q:"Di taman ada 7 jejak kaki dinosaurus. Kemudian ditemukan 5 jejak lagi. Berapa jumlah jejak kaki sekarang?",o:["11","12","13"],a:1},
+{q:"Dino memiliki 14 buah daun. Ia memakan 6 daun. Berapa daun yang tersisa?",o:["8","9","10"],a:0},
+{q:"Ada 9 telur dinosaurus di sarang pertama dan 6 telur di sarang kedua. Angka yang lebih besar adalah …",o:["9","6","keduanya sama"],a:0},
+{q:"Bima mengumpulkan 4 batu. Sari mengumpulkan 8 batu. Pernyataan yang benar adalah …",o:["4 > 8","4 < 8","4 = 8"],a:1},
+{q:"Museum memiliki 13 fosil. Sebanyak 5 fosil dipindahkan ke ruang lain. Berapa fosil yang masih ada?",o:["7","8","9"],a:1},
+{q:"Seekor Triceratops menemukan 6 buah daun pada pagi hari dan 7 buah pada siang hari. Operasi yang tepat adalah …",o:["6 − 7","6 + 7","7 − 6"],a:1},
+{q:"Rara mempunyai 10 kartu dinosaurus. Ia memberikan 3 kartu kepada adiknya. Berapa kartu Rara sekarang?",o:["6","7","8"],a:1},
+{q:"Di kotak A ada 15 batu, sedangkan di kotak B ada 11 batu. Tanda yang tepat adalah …",o:["15 < 11","15 > 11","15 = 11"],a:1},
+{q:"Dino menemukan 8 tulang kecil lalu menemukan 9 tulang lagi. Berapa semuanya?",o:["16","17","18"],a:1},
+{q:"Ada 18 gambar dinosaurus. Sebanyak 9 gambar ditempel di buku. Berapa gambar yang belum ditempel?",o:["8","9","10"],a:1}
+]};
+
+let scores={indo:null,mtk:null};
+// ================= ONLINE LEADERBOARD =================
+// Setelah membuat Google Apps Script sesuai petunjuk, tempel URL Web App di bawah.
+// Contoh: https://script.google.com/macros/s/XXXXXXXX/exec
+const ONLINE_API_URL = "https://script.google.com/macros/s/AKfycbxEvLNYzo-S6uIl0KBCkRy9deH_hPafCibP5u2OqSCXnXXVutVmaDKD8_AVaIxAqJmK/exec";
+
+
+async function checkAlreadySubmitted(){
+  if(!student.name || !student.absence) return false;
+  try{
+    const url=ONLINE_API_URL+'?action=check&name='+encodeURIComponent(student.name)+'&absence='+encodeURIComponent(student.absence)+'&t='+Date.now();
+    const r=await fetch(url,{cache:'no-store'});
+    const d=await r.json();
+    return !!(d && d.exists);
+  }catch(e){
+    return false;
+  }
+}
+
+async function saveOnlineResult(){
+  if(!student.name || !student.absence) return false;
+  if(!ONLINE_API_URL || ONLINE_API_URL.startsWith("TEMPEL_")) return false;
+
+  const total=scores.indo+scores.mtk;
+
+  // Kirim memakai form POST + iframe tersembunyi.
+  // Cara ini tidak membutuhkan CORS/no-cors sehingga cocok untuk HTML yang dibuka
+  // langsung dari komputer maupun hosting biasa.
+  return new Promise((resolve)=>{
+    const iframeName="dinoSubmitFrame_"+Date.now();
+    const iframe=document.createElement("iframe");
+    iframe.name=iframeName;
+    iframe.id=iframeName;
+    iframe.style.display="none";
+    document.body.appendChild(iframe);
+
+    const form=document.createElement("form");
+    form.method="POST";
+    form.action=ONLINE_API_URL;
+    form.target=iframeName;
+    form.style.display="none";
+
+    const fields={
+      name:student.name,
+      absence:student.absence,
+      indo:String(scores.indo),
+      mtk:String(scores.mtk),
+      total:String(total),
+      photoData:student.photoData || ""
+    };
+
+    Object.keys(fields).forEach(key=>{
+      const input=document.createElement("input");
+      input.type="hidden";
+      input.name=key;
+      input.value=fields[key];
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+
+    let settled=false;
+    const finish=(ok)=>{
+      if(settled) return;
+      settled=true;
+      setTimeout(()=>{
+        form.remove();
+        iframe.remove();
+      },1500);
+      resolve(ok);
+    };
+
+    iframe.addEventListener("load",()=>finish(true),{once:true});
+    iframe.addEventListener("error",()=>finish(false),{once:true});
+
+    try{
+      form.submit();
+      // Jika browser tidak memberi event load, anggap pengiriman sudah dimulai.
+      setTimeout(()=>finish(true),1200);
+    }catch(e){
+      console.warn("Gagal mengirim hasil online:",e);
+      finish(false);
+    }
+  });
+}
+
+async function loadOnlineLeaderboard(){
+  const box=document.getElementById('leaderboardTable');
+  if(!box) return;
+
+  box.innerHTML='<div class="result">⏳ Memuat leaderboard kelas...</div>';
+
+  // Gunakan JSONP agar pembacaan data kompatibel dengan Chrome Android,
+  // iPhone, dan GitHub Pages tanpa masalah CORS.
+  const old=document.getElementById('dinoLeaderboardJsonp');
+  if(old) old.remove();
+
+  const callbackName='dinoLeaderboardCallback_'+Date.now();
+  let finished=false;
+
+  window[callbackName]=function(data){
+    finished=true;
+    try{
+      renderBoardRows(data);
+    }catch(e){
+      box.innerHTML='<div class="result">⚠️ Data leaderboard tidak dapat ditampilkan.</div>';
+    }
+    cleanup();
+  };
+
+  const script=document.createElement('script');
+  script.id='dinoLeaderboardJsonp';
+  script.async=true;
+  script.src=ONLINE_API_URL+'?action=leaderboard&callback='+encodeURIComponent(callbackName)+'&t='+Date.now();
+
+  script.onerror=function(){
+    if(finished) return;
+    box.innerHTML='<div class="result">⚠️ Leaderboard online belum dapat dimuat. Periksa koneksi internet.</div>';
+    cleanup();
+  };
+
+  document.body.appendChild(script);
+
+  const timer=setTimeout(function(){
+    if(finished) return;
+    box.innerHTML='<div class="result">⚠️ Leaderboard belum merespons. Tekan 🔄 Muat Ulang.</div>';
+    cleanup();
+  },10000);
+
+  function cleanup(){
+    clearTimeout(timer);
+    if(script.parentNode) script.parentNode.removeChild(script);
+    try{delete window[callbackName];}catch(e){window[callbackName]=undefined;}
+  }
+}
+
+function renderBoardRows(board){
+  const box=document.getElementById('leaderboardTable');
+  if(!box) return;
+  if(!Array.isArray(board) || !board.length){
+    box.innerHTML='<div class="result">Belum ada hasil. Jadilah yang pertama mengerjakan! 🦖</div>';
+    return;
+  }
+  // Urutan dari server dipertahankan agar aturan nilai sama = waktu kirim lebih awal tetap berlaku.
+  box.innerHTML=`<div style="overflow:auto"><table style="width:100%;border-collapse:collapse">
+    <thead><tr style="background:#e8f7ff">
+      <th style="padding:12px;text-align:left">Peringkat</th>
+      <th style="padding:12px">Foto</th>
+      <th style="padding:12px;text-align:left">Nama</th>
+      <th style="padding:12px">Absen</th>
+      <th style="padding:12px">B. Indonesia</th>
+      <th style="padding:12px">Matematika</th>
+      <th style="padding:12px">Total</th>
+      <th style="padding:12px">Tanggal & Jam (WIB)</th>
+    </tr></thead>
+    <tbody>${board.map((x,i)=>`
+      <tr style="border-bottom:1px solid #dcecf5">
+        <td style="padding:12px">${i<3?['🥇','🥈','🥉'][i]:i+1}</td>
+        <td style="padding:8px;text-align:center">${x.photoUrl?`<img src="${escapeHtml(String(x.photoUrl))}" alt="Foto ${escapeHtml(String(x.name||''))}" style="width:52px;height:52px;object-fit:cover;border-radius:50%;border:3px solid #d9eef5" loading="lazy">`:'<span style="font-size:28px">🦖</span>'}</td>
+        <td style="padding:12px"><b>${escapeHtml(String(x.name||''))}</b></td>
+        <td style="padding:12px;text-align:center">${escapeHtml(String(x.absence||''))}</td>
+        <td style="padding:12px;text-align:center">${Number(x.indo)||0}/10</td>
+        <td style="padding:12px;text-align:center">${Number(x.mtk)||0}/10</td>
+        <td style="padding:12px;text-align:center"><b>${Number(x.total)||0}/20</b></td>
+        <td style="padding:12px;text-align:center;white-space:nowrap">${escapeHtml(String(x.timestamp || x.completedAt || '-'))}</td>
+      </tr>`).join('')}</tbody></table></div>`;
+}
+
+// Saat membuka halaman leaderboard, ambil data bersama dari internet.
+document.addEventListener('DOMContentLoaded',()=>{
+  const lb=document.querySelector('[data-section="leaderboard"]');
+  if(lb) lb.addEventListener('click',()=>loadOnlineLeaderboard());
+});
+
+let student={name:"",absence:"",photoData:""};
+
+function handleStudentPhoto(event){
+  const file=event.target.files && event.target.files[0];
+  const wrap=document.getElementById('photoPreviewWrap');
+  const img=document.getElementById('photoPreview');
+  if(!file){
+    student.photoData="";
+    if(wrap) wrap.style.display='none';
+    return;
+  }
+  if(!file.type.startsWith('image/')){
+    alert('Silakan pilih file foto/gambar.');
+    event.target.value='';
+    return;
+  }
+  const reader=new FileReader();
+  reader.onload=function(){
+    const image=new Image();
+    image.onload=function(){
+      const max=500;
+      const scale=Math.min(1,max/Math.max(image.width,image.height));
+      const canvas=document.createElement('canvas');
+      canvas.width=Math.max(1,Math.round(image.width*scale));
+      canvas.height=Math.max(1,Math.round(image.height*scale));
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(image,0,0,canvas.width,canvas.height);
+      // Kompres agar aman dikirim lewat Apps Script.
+      student.photoData=canvas.toDataURL('image/jpeg',0.78);
+      if(img) img.src=student.photoData;
+      if(wrap) wrap.style.display='block';
+    };
+    image.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveStudent(){
+  const name=document.getElementById('studentName').value.trim();
+  const absence=document.getElementById('studentAbsence').value.trim();
+  const status=document.getElementById('studentStatus');
+  if(!name || !absence){
+    status.style.display='block';
+    status.textContent='⚠️ Nama dan nomor absen harus diisi terlebih dahulu.';
+    return false;
+  }
+  if(!student.photoData){
+    status.style.display='block';
+    status.textContent='📸 Silakan ambil foto terlebih dahulu agar dapat tampil di leaderboard.';
+    return false;
+  }
+  student={name,absence,photoData:student.photoData};
+  localStorage.setItem('dinoStudent',JSON.stringify({name,absence}));
+  status.style.display='block';
+  status.textContent=`✅ Data tersimpan: ${name} (Absen ${absence}). Selamat belajar!`;
+  return true;
+}
+
+function loadStudent(){
+  try{
+    const saved=JSON.parse(localStorage.getItem('dinoStudent')||'null');
+    if(saved && saved.name){
+      // Identitas lama hanya ditampilkan untuk kenyamanan; foto tidak disimpan di localStorage.
+      student={name:saved.name,absence:saved.absence,photoData:""};
+      document.getElementById('studentName').value=saved.name;
+      document.getElementById('studentAbsence').value=saved.absence;
+      const status=document.getElementById('studentStatus');
+      status.style.display='block';
+      status.textContent=`👋 Selamat datang kembali, ${saved.name}!`;
+    }
+  }catch(e){}
+}
+
+function saveLeaderboard(){
+  if(!student.name || !student.absence) return;
+  const board=JSON.parse(localStorage.getItem('dinoLeaderboard')||'[]');
+  const total=scores.indo+scores.mtk;
+  const entry={
+    name:student.name,
+    absence:student.absence,
+    indo:scores.indo,
+    mtk:scores.mtk,
+    total,
+    date:new Date().toLocaleString('id-ID')
+  };
+  // Satu hasil terbaik per nama + nomor absen.
+  const idx=board.findIndex(x=>x.name.toLowerCase()===entry.name.toLowerCase() && String(x.absence)===String(entry.absence));
+  if(idx>=0){
+    if(entry.total>=board[idx].total) board[idx]=entry;
+  }else{
+    board.push(entry);
+  }
+  board.sort((a,b)=>b.total-a.total || b.indo-a.indo || b.mtk-a.mtk || a.name.localeCompare(b.name));
+  localStorage.setItem('dinoLeaderboard',JSON.stringify(board.slice(0,50)));
+  renderLeaderboard();
+}
+
+function renderLeaderboard(){
+  const box=document.getElementById('leaderboardTable');
+  if(!box) return;
+  const board=JSON.parse(localStorage.getItem('dinoLeaderboard')||'[]');
+  if(!board.length){
+    box.innerHTML='<div class="result">Belum ada hasil. Jadilah yang pertama mengerjakan! 🦖</div>';
+    return;
+  }
+  box.innerHTML=`<div style="overflow:auto"><table style="width:100%;border-collapse:collapse">
+    <thead><tr style="background:#e8f7ff">
+      <th style="padding:12px;text-align:left">Peringkat</th>
+      <th style="padding:12px;text-align:left">Nama</th>
+      <th style="padding:12px">Absen</th>
+      <th style="padding:12px">B. Indonesia</th>
+      <th style="padding:12px">Matematika</th>
+      <th style="padding:12px">Total</th>
+    </tr></thead>
+    <tbody>${board.map((x,i)=>`
+      <tr style="border-bottom:1px solid #dcecf5">
+        <td style="padding:12px">${i<3?['🥇','🥈','🥉'][i]:i+1}</td>
+        <td style="padding:12px"><b>${escapeHtml(x.name)}</b></td>
+        <td style="padding:12px;text-align:center">${escapeHtml(String(x.absence))}</td>
+        <td style="padding:12px;text-align:center">${x.indo}/10</td>
+        <td style="padding:12px;text-align:center">${x.mtk}/10</td>
+        <td style="padding:12px;text-align:center"><b>${x.total}/20</b></td>
+      </tr>`).join('')}</tbody></table></div>`;
+}
+
+function escapeHtml(str){
+  return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+
+function clearLeaderboard(){
+  if(confirm('Hapus semua data leaderboard di perangkat ini?')){
+    localStorage.removeItem('dinoLeaderboard');
+    renderLeaderboard();
+  }
+}
+
+function showSection(id){
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ const target=document.getElementById(id);
+ if(!target) return;
+ target.classList.add('active');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.section===id));
+ if(id==='leaderboard') setTimeout(loadOnlineLeaderboard,100);
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav-btn').forEach(b=>b.onclick=()=>showSection(b.dataset.section));
+
+function renderQuiz(type){
+ const box=document.getElementById(type+'Questions');
+ box.innerHTML=data[type].map((x,i)=>`
+ <div class="question">
+  <h3>${i+1}. ${x.q}</h3>
+  ${x.o.map((opt,j)=>`<label class="option"><input type="radio" name="${type}${i}" value="${j}"> ${opt}</label>`).join('')}
+  <div id="${type}fb${i}" class="feedback"></div>
+ </div>`).join('');
+}
+renderQuiz('indo'); renderQuiz('mtk'); loadStudent(); renderLeaderboard();
+
+async function gradeQuiz(type){
+ if(!student.name || !student.absence){
+   alert('Silakan isi Nama dan Nomor Absen di Beranda terlebih dahulu.');
+   showSection('home');
+   return;
+ }
+ if(window.quizSubmitted){
+   alert('Hasilmu sudah dikirim. Kamu tidak dapat mengerjakan lagi.');
+   return;
+ }
+ let score=0, answered=0;
+ data[type].forEach((x,i)=>{
+   const chosen=document.querySelector(`input[name="${type}${i}"]:checked`);
+   const fb=document.getElementById(type+'fb'+i);
+   if(chosen){
+     answered++;
+     if(+chosen.value===x.a){
+       score++;
+       fb.textContent="✓ Benar! Hebat!";
+       fb.className="feedback correct";
+     }else{
+       fb.textContent="✗ Belum tepat.";
+       fb.className="feedback wrong";
+     }
+   }else{
+     fb.textContent="Belum dijawab.";
+     fb.className="feedback wrong";
+   }
+ });
+ scores[type]=score;
+ document.getElementById(type+'Score').textContent=score+'/10';
+ document.getElementById(type+'Progress').style.width=(score*10)+'%';
+ const pct=score*10;
+ document.getElementById(type+'Result').innerHTML=
+   `<div class="result">Kamu menjawab ${answered} soal. Nilai sementara: ${score}/10 (${pct}%).</div>`;
+ updateResults();
+
+ // Lock this section after "Kirim" so answers cannot be changed.
+ document.querySelectorAll(`input[name^="${type}"]`).forEach(el=>el.disabled=true);
+ const btn=document.querySelector(`button[onclick="gradeQuiz('${type}')"]`);
+ if(btn){
+   btn.disabled=true;
+   btn.textContent="✓ Sudah Dikirim";
+ }
+
+ // When both sections have been checked, enable final online submission.
+ if(scores.indo !== null && scores.mtk !== null){
+   const fs=document.getElementById('finalSendBtn');
+   if(fs) fs.disabled=false;
+ }
+}
+
+async function submitFinalResult(){
+ if(window.quizSubmitted){
+   alert('Hasilmu sudah pernah dikirim.');
+   return;
+ }
+ if(!student.name || !student.absence){
+   alert('Silakan isi Nama dan Nomor Absen di Beranda terlebih dahulu.');
+   showSection('home');
+   return;
+ }
+ if(scores.indo===null || scores.mtk===null){
+   alert('Selesaikan dan klik Kirim pada Bahasa Indonesia dan Matematika terlebih dahulu.');
+   return;
+ }
+
+ const btn=document.getElementById('finalSendBtn');
+ const status=document.getElementById('finalSendStatus');
+ if(btn) { btn.disabled=true; btn.textContent='⏳ Mengirim...'; }
+
+ const sent=await saveOnlineResult();
+ if(sent){
+   window.quizSubmitted=true;
+   try{ localStorage.setItem('dinoSubmitted_'+student.absence+'_'+student.name.toLowerCase(),'1'); }catch(e){}
+   if(status){
+     status.style.display='block';
+     status.textContent='☁️ Hasil berhasil dikirim. Kamu hanya dapat mengerjakan satu kali.';
+   }
+   if(btn) btn.textContent='✓ Hasil Sudah Dikirim';
+   // Lock all quiz controls.
+   document.querySelectorAll('#indo input,#mtk input').forEach(el=>el.disabled=true);
+ }else{
+   if(btn){ btn.disabled=false; btn.textContent='📤 Kirim Hasil'; }
+   if(status){
+     status.style.display='block';
+     status.textContent='⚠️ Hasil belum terkirim. Periksa koneksi internet lalu coba lagi.';
+   }
+ }
+}
+
+function updateResults(){
+ const total=scores.indo+scores.mtk;
+ document.getElementById('finalIndo').textContent=scores.indo+'/10';
+ document.getElementById('finalMtk').textContent=scores.mtk+'/10';
+ document.getElementById('finalTotal').textContent=total+'/20';
+ document.getElementById('motivasi').textContent =
+ total>=18?'🌟 Luar biasa! Kamu sudah menjadi Dino Cerdas yang hebat!':
+ total>=14?'👏 Bagus! Sedikit lagi menuju nilai sempurna!':
+ total>=10?'💪 Terus berlatih. Kamu pasti bisa lebih baik!':
+ '🌱 Ayo pelajari materi lagi lalu coba soal kembali!';
+}
+</script>
+
+</body>
+</html>
