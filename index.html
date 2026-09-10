@@ -473,7 +473,7 @@ function handleStudentPhoto(event){
   reader.onload=function(){
     const image=new Image();
     image.onload=function(){
-      const max=500;
+      const max=240;
       const scale=Math.min(1,max/Math.max(image.width,image.height));
       const canvas=document.createElement('canvas');
       canvas.width=Math.max(1,Math.round(image.width*scale));
@@ -481,7 +481,7 @@ function handleStudentPhoto(event){
       const ctx=canvas.getContext('2d');
       ctx.drawImage(image,0,0,canvas.width,canvas.height);
       // Kompres agar aman dikirim lewat Apps Script.
-      student.photoData=canvas.toDataURL('image/jpeg',0.78);
+      student.photoData=canvas.toDataURL('image/jpeg',0.62);
       if(img) img.src=student.photoData;
       if(wrap) wrap.style.display='block';
     };
